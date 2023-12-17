@@ -27,11 +27,11 @@ const (
 	// frontierDurationLimit is for Frontier:
 	// The decision boundary on the blocktime duration used to determine
 	// whether difficulty should go up or down.
-	frontierDurationLimit = 30
+	frontierDurationLimit = 15
 	// minimumDifficulty The minimum that the difficulty may ever be.
 	minimumDifficulty = 1000000
 	// expDiffPeriod is the exponential difficulty period
-	expDiffPeriodUint = 100000
+	expDiffPeriodUint = 50
 	// difficultyBoundDivisorBitShift is the bound divisor of the difficulty (2048),
 	// This constant is the right-shifts to use for the division.
 	difficultyBoundDivisor = 11
