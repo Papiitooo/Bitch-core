@@ -91,7 +91,7 @@ func (st *Stack) Print() {
 	fmt.Println("### stack ###")
 	if len(st.data) > 0 {
 		for i, val := range st.data {
-			fmt.Printf("%-3d  %s\n", i, val.String())
+			fmt.Printf("%-3d  %v\n", i, val)
 		}
 	} else {
 		fmt.Println("-- empty --")

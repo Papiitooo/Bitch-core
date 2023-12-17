@@ -24,7 +24,6 @@ import (
 	"math/big"
 	"math/rand"
 	"os"
-	"os/signal"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/keystore"
@@ -60,15 +59,11 @@ func main() {
 	// Create a Clique network based off of the Rinkeby config
 	genesis := makeGenesis(faucets, sealers)
 
-	// Handle interrupts.
-	interruptCh := make(chan os.Signal, 5)
-	signal.Notify(interruptCh, os.Interrupt)
-
 	var (
-		stacks []*node.Node
 		nodes  []*eth.Ethereum
 		enodes []*enode.Node
 	)
+
 	for _, sealer := range sealers {
 		// Start the node and wait until it's up
 		stack, ethBackend, err := makeSealer(genesis)
@@ -85,20 +80,18 @@ func main() {
 			stack.Server().AddPeer(n)
 		}
 		// Start tracking the node and its enode
-		stacks = append(stacks, stack)
 		nodes = append(nodes, ethBackend)
 		enodes = append(enodes, stack.Server().Self())
 
 		// Inject the signer key and start sealing with it
-		ks := keystore.NewKeyStore(stack.KeyStoreDir(), keystore.LightScryptN, keystore.LightScryptP)
-		signer, err := ks.ImportECDSA(sealer, "")
+		store := stack.AccountManager().Backends(keystore.KeyStoreType)[0].(*keystore.KeyStore)
+		signer, err := store.ImportECDSA(sealer, "")
 		if err != nil {
 			panic(err)
 		}
-		if err := ks.Unlock(signer, ""); err != nil {
+		if err := store.Unlock(signer, ""); err != nil {
 			panic(err)
 		}
-		stack.AccountManager().AddBackend(ks)
 	}
 
 	// Iterate over all the nodes and start signing on them
@@ -113,16 +106,6 @@ func main() {
 	// Start injecting transactions from the faucet like crazy
 	nonces := make([]uint64, len(faucets))
 	for {
-		// Stop when interrupted.
-		select {
-		case <-interruptCh:
-			for _, node := range stacks {
-				node.Close()
-			}
-			return
-		default:
-		}
-
 		// Pick a random signer node
 		index := rand.Intn(len(faucets))
 		backend := nodes[index%len(nodes)]
@@ -210,6 +193,7 @@ func makeSealer(genesis *core.Genesis) (*node.Node, *eth.Ethereum, error) {
 		TxPool:          core.DefaultTxPoolConfig,
 		GPO:             ethconfig.Defaults.GPO,
 		Miner: miner.Config{
+			GasFloor: genesis.GasLimit * 9 / 10,
 			GasCeil:  genesis.GasLimit * 11 / 10,
 			GasPrice: big.NewInt(1),
 			Recommit: time.Second,

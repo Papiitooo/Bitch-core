@@ -24,10 +24,8 @@ import (
 	"sync"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rlp"
 )
 
 var (
@@ -176,10 +174,6 @@ func (t *Trie) TryGetNode(path []byte) ([]byte, int, error) {
 }
 
 func (t *Trie) tryGetNode(origNode node, path []byte, pos int) (item []byte, newnode node, resolved int, err error) {
-	// If non-existent path requested, abort
-	if origNode == nil {
-		return nil, nil, 0, nil
-	}
 	// If we reached the requested path, return the current node
 	if pos >= len(path) {
 		// Although we most probably have the original node expanded, encoding
@@ -199,6 +193,10 @@ func (t *Trie) tryGetNode(origNode node, path []byte, pos int) (item []byte, new
 	}
 	// Path still needs to be traversed, descend into children
 	switch n := (origNode).(type) {
+	case nil:
+		// Non-existent path requested, abort
+		return nil, nil, 0, nil
+
 	case valueNode:
 		// Path prematurely ended, abort
 		return nil, nil, 0, nil
@@ -246,14 +244,6 @@ func (t *Trie) Update(key, value []byte) {
 	if err := t.TryUpdate(key, value); err != nil {
 		log.Error(fmt.Sprintf("Unhandled trie error: %v", err))
 	}
-}
-
-func (t *Trie) TryUpdateAccount(key []byte, acc *types.StateAccount) error {
-	data, err := rlp.EncodeToBytes(acc)
-	if err != nil {
-		return fmt.Errorf("can't encode object at %x: %w", key[:], err)
-	}
-	return t.TryUpdate(key, data)
 }
 
 // TryUpdate associates key with value in the trie. Subsequent calls to
@@ -524,12 +514,12 @@ func (t *Trie) Hash() common.Hash {
 
 // Commit writes all nodes to the trie's memory database, tracking the internal
 // and external (for account tries) references.
-func (t *Trie) Commit(onleaf LeafCallback) (common.Hash, int, error) {
+func (t *Trie) Commit(onleaf LeafCallback) (root common.Hash, err error) {
 	if t.db == nil {
 		panic("commit called on trie with nil database")
 	}
 	if t.root == nil {
-		return emptyRoot, 0, nil
+		return emptyRoot, nil
 	}
 	// Derive the hash for all dirty nodes first. We hold the assumption
 	// in the following procedure that all nodes are hashed.
@@ -541,7 +531,7 @@ func (t *Trie) Commit(onleaf LeafCallback) (common.Hash, int, error) {
 	// up goroutines. This can happen e.g. if we load a trie for reading storage
 	// values, but don't write to it.
 	if _, dirty := t.root.cache(); !dirty {
-		return rootHash, 0, nil
+		return rootHash, nil
 	}
 	var wg sync.WaitGroup
 	if onleaf != nil {
@@ -553,7 +543,8 @@ func (t *Trie) Commit(onleaf LeafCallback) (common.Hash, int, error) {
 			h.commitLoop(t.db)
 		}()
 	}
-	newRoot, committed, err := h.Commit(t.root, t.db)
+	var newRoot hashNode
+	newRoot, err = h.Commit(t.root, t.db)
 	if onleaf != nil {
 		// The leafch is created in newCommitter if there was an onleaf callback
 		// provided. The commitLoop only _reads_ from it, and the commit
@@ -563,10 +554,10 @@ func (t *Trie) Commit(onleaf LeafCallback) (common.Hash, int, error) {
 		wg.Wait()
 	}
 	if err != nil {
-		return common.Hash{}, 0, err
+		return common.Hash{}, err
 	}
 	t.root = newRoot
-	return rootHash, committed, nil
+	return rootHash, nil
 }
 
 // hashRoot calculates the root hash of the given trie

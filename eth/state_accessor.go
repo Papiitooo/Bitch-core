@@ -119,8 +119,7 @@ func (eth *Ethereum) stateAtBlock(block *types.Block, reexec uint64, base *state
 		// Finalize the state so any modifications are written to the trie
 		root, err := statedb.Commit(eth.blockchain.Config().IsEIP158(current.Number()))
 		if err != nil {
-			return nil, fmt.Errorf("stateAtBlock commit failed, number %d root %v: %w",
-				current.NumberU64(), current.Root().Hex(), err)
+			return nil, err
 		}
 		statedb, err = state.New(root, database, nil)
 		if err != nil {
