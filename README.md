@@ -17,7 +17,7 @@ archives are published at https://geth.ethereum.org/downloads/.
  git clone https://github.com/Papiitoo/BitchCoin-core.git
 ```
 
-Building `geth` requires both a Go (version 1.14 or later) and a C compiler. You can install
+Building `bitch` requires both a Go (version 1.14 or later) and a C compiler. You can install
 them using your favourite package manager. Once the dependencies are installed, run
 
 ```shell
