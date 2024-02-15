@@ -15,7 +15,7 @@ GORUN = env GO111MODULE=on go run
 bitch:
 	$(GORUN) build/ci.go install ./cmd/bitch
 	@echo "Done building."
-	@echo "Run \"$(GOBIN)/geth\" to launch geth."
+	@echo "Run \"$(GOBIN)/bitch\" to launch bitch."
 
 all:
 	$(GORUN) build/ci.go install
