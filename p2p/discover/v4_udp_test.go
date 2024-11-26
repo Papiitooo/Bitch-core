@@ -31,11 +31,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/internal/testlog"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/discover/v4wire"
-	"github.com/ethereum/go-ethereum/p2p/enode"
-	"github.com/ethereum/go-ethereum/p2p/enr"
+	"github.com/Papiitooo/Bitch-core/internal/testlog"
+	"github.com/Papiitooo/Bitch-core/log"
+	"github.com/Papiitooo/Bitch-core/p2p/discover/v4wire"
+	"github.com/Papiitooo/Bitch-core/p2p/enode"
+	"github.com/Papiitooo/Bitch-core/p2p/enr"
 )
 
 // shared test variables

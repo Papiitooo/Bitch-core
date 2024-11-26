@@ -20,15 +20,15 @@ import (
 	"encoding/binary"
 	"encoding/json"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/light"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/Papiitooo/Bitch-core/common"
+	"github.com/Papiitooo/Bitch-core/core"
+	"github.com/Papiitooo/Bitch-core/core/state"
+	"github.com/Papiitooo/Bitch-core/core/types"
+	"github.com/Papiitooo/Bitch-core/light"
+	"github.com/Papiitooo/Bitch-core/log"
+	"github.com/Papiitooo/Bitch-core/metrics"
+	"github.com/Papiitooo/Bitch-core/rlp"
+	"github.com/Papiitooo/Bitch-core/trie"
 )
 
 // serverBackend defines the backend functions needed for serving LES requests

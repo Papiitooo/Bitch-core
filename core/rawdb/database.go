@@ -24,11 +24,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/ethdb/leveldb"
-	"github.com/ethereum/go-ethereum/ethdb/memorydb"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/Papiitooo/Bitch-core/common"
+	"github.com/Papiitooo/Bitch-core/ethdb"
+	"github.com/Papiitooo/Bitch-core/ethdb/leveldb"
+	"github.com/Papiitooo/Bitch-core/ethdb/memorydb"
+	"github.com/Papiitooo/Bitch-core/log"
 	"github.com/olekukonko/tablewriter"
 )
 

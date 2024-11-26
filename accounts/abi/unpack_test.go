@@ -26,7 +26,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/Papiitooo/Bitch-core/common"
 	"github.com/stretchr/testify/require"
 )
 

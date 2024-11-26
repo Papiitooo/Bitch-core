@@ -20,10 +20,10 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/ethereum/go-ethereum/common/mclock"
-	"github.com/ethereum/go-ethereum/p2p/enode"
-	"github.com/ethereum/go-ethereum/p2p/enr"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/Papiitooo/Bitch-core/common/mclock"
+	"github.com/Papiitooo/Bitch-core/p2p/enode"
+	"github.com/Papiitooo/Bitch-core/p2p/enr"
+	"github.com/Papiitooo/Bitch-core/rlp"
 )
 
 // Packet is implemented by all message types.

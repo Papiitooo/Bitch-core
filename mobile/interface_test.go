@@ -22,7 +22,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/Papiitooo/Bitch-core/common"
 )
 
 func TestInterfaceGetSet(t *testing.T) {

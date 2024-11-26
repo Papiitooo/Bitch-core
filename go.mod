@@ -1,4 +1,4 @@
-module github.com/ethereum/go-ethereum
+module github.com/Papiitooo/Bitch-core
 
 go 1.15
 

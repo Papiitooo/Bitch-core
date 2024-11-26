@@ -19,7 +19,7 @@ package ethash
 import (
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/Papiitooo/Bitch-core/core/types"
 	"github.com/holiman/uint256"
 )
 
