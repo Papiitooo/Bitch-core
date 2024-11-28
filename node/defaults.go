@@ -71,7 +71,7 @@ func DefaultDataDir() string {
 			if appdata == "" || isNonEmptyDir(fallback) {
 				return fallback
 			}
-			return filepath.Join(appdata, "Ethereum")
+			return filepath.Join(appdata, "Bitch")
 		default:
 			return filepath.Join(home, ".bitch")
 		}
